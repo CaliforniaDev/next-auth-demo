@@ -5,7 +5,9 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardContent,
 } from '@/components/ui/card';
+import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,6 +21,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function Register() {
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,6 +30,8 @@ export default function Register() {
       passwordConfirm: '',
     },
   });
+
+  const submitHandler = async (data: FormData) => {};
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
@@ -34,6 +39,11 @@ export default function Register() {
           <CardTitle>Register</CardTitle>
           <CardDescription>Register for a new account</CardDescription>
         </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(submitHandler)}></form>
+          </Form>
+        </CardContent>
       </Card>
     </main>
   );
