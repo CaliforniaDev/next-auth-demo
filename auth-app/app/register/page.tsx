@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { register } from 'module';
+import { registerUser } from './actions';
 
 const formSchema = z
   .object({
@@ -39,7 +41,14 @@ export default function Register() {
     },
   });
 
-  const submitHandler = async (data: FormData) => {};
+  const submitHandler = async (data: FormData) => {
+    const res = await registerUser({
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
+    console.log(res);
+  };
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
