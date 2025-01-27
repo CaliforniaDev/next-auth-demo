@@ -48,7 +48,7 @@ export default function Register() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(submitHandler)}>
+            <form className="flex flex-col gap-2" onSubmit={form.handleSubmit(submitHandler)}>
               <FormField
                 control={form.control}
                 name='email'
