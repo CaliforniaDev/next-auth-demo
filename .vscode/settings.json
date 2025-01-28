@@ -1,33 +1,34 @@
 {
+  "window.zoomLevel": 0.5, 
+  "editor.fontSize": 12.5,
   "cSpell.words": [
     "turbopack"
   ],
   "workbench.colorCustomizations": {
-    "terminal.background": "#1E1E1E", // Deep navy background for contrast
-    "terminal.foreground": "#FF6EC7", // Soft lavender for default text
-    "terminalCursor.background": "#FF6EC7", // Neon pink cursor
+    "terminal.background": "#1E1E1E",
+    "terminal.foreground": "#FF6EC7",
+    "terminalCursor.background": "#FF6EC7",
     "terminalCursor.foreground": "#89FFFF",
-    "terminal.ansiBlack": "#1A1A2E", // Deep navy for subtle text
-    "terminal.ansiRed": "#FF5370", // Neon coral for errors
-    "terminal.ansiGreen": "#62D196", // Bright mint green for success
-    "terminal.ansiYellow": "#F78C6C", // Neon peach for warnings
-    "terminal.ansiBlue": "#82AAFF", // Electric blue for info
-    "terminal.ansiMagenta": "#C792EA", // Neon lavender for accents
-    "terminal.ansiCyan": "#89DDFF", // Bright cyan for highlights
-    "terminal.ansiWhite": "#FFFFFF", // Bright white for strong contrast
-    "terminal.ansiBrightBlack": "#2E3440", // Muted dark gray for logs
-    "terminal.ansiBrightRed": "#FF6EC7", // Neon pink for critical alerts
-    "terminal.ansiBrightGreen": "#A1FFCE", // Pastel mint green for emphasis
-    "terminal.ansiBrightYellow": "#FFD580", // Warm yellow for highlights
-    "terminal.ansiBrightBlue": "#76EFFF", // Bright aqua blue for cleaner info
-    "terminal.ansiBrightMagenta": "#D9A8FF", // Pastel neon purple for commands
-    "terminal.ansiBrightCyan": "#89FFFF", // Vibrant aqua cyan for highlights
-    "terminal.ansiBrightWhite": "#F8F8F2" // Soft white for text clarity
+    "terminal.ansiBlack": "#1A1A2E",
+    "terminal.ansiRed": "#FF5370",
+    "terminal.ansiGreen": "#62D196",
+    "terminal.ansiYellow": "#F78C6C",
+    "terminal.ansiBlue": "#82AAFF",
+    "terminal.ansiMagenta": "#C792EA",
+    "terminal.ansiCyan": "#89DDFF",
+    "terminal.ansiWhite": "#FFFFFF",
+    "terminal.ansiBrightBlack": "#2E3440",
+    "terminal.ansiBrightRed": "#FF6EC7",
+    "terminal.ansiBrightGreen": "#A1FFCE",
+    "terminal.ansiBrightYellow": "#FFD580",
+    "terminal.ansiBrightBlue": "#76EFFF",
+    "terminal.ansiBrightMagenta": "#D9A8FF",
+    "terminal.ansiBrightCyan": "#89FFFF",
+    "terminal.ansiBrightWhite": "#F8F8F2"
   },
   "terminal.integrated.fontFamily": "Monolisa",
   "terminal.integrated.fontSize": 13.5,
   "terminal.integrated.cursorBlinking": true, // Adds a stylish blinking cursor
   "terminal.integrated.lineHeight": 1.4 // Improved spacing for readability
-
 }
 
