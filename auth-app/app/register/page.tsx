@@ -40,7 +40,7 @@ export default function Register() {
     },
   });
 
-  const submitHandler = async (data: FormData) => {
+  const handleSubmit = async (data: FormData) => {
     const res = await registerUser({
       email: data.email,
       password: data.password,
