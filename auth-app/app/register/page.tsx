@@ -59,7 +59,7 @@ export default function Register() {
           <Form {...form}>
             <form
               className='flex flex-col gap-2'
-              onSubmit={form.handleSubmit(submitHandler)}
+              onSubmit={form.handleSubmit(handleSubmit)}
             >
               <FormField
                 control={form.control}
