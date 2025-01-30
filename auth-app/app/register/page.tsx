@@ -41,19 +41,20 @@ export default function Register() {
   });
 
   const handleSubmit = async (data: FormData) => {
-    const res = await registerUser({
+    const response = await registerUser({
       email: data.email,
       password: data.password,
       passwordConfirm: data.passwordConfirm,
     });
 
-    if (res?.error) {
+    if (response?.error) {
       form.setError('email', {
-        message: res?.message,
+        message: response?.message,
       });
     }
-    console.log(res);
+    console.log(response);
   };
+
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
