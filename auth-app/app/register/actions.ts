@@ -1,8 +1,9 @@
 'use server';
 
 import { z } from 'zod';
-import db from '@/db/drizzle';
 import { hash } from 'bcryptjs';
+import db from '@/db/drizzle';
+import { users } from '@/db/usersSchema';
 import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
 
 interface RegisterUser {
@@ -38,5 +39,10 @@ export const registerUser = async ({
     };
   }
 
-
+  // Hash the password
+  const hashedPassword = await hash(password, 12);
+  await db.insert(users).values({
+    email,
+    password: hashedPassword,
+  })
 };
