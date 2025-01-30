@@ -39,7 +39,6 @@ export const registerUser = async ({
 }: RegisterUser) => {
   const result = await db.select();
   try {
-    // Check if the email already exists in the database
     const newUserScheme = z
       .object({
         email: z.string().email(),
@@ -51,7 +50,6 @@ export const registerUser = async ({
       password,
       passwordConfirm,
     });
-    // If validation fails, return an error response
     if (!newUserValidation.success) {
       return {
         error: true,
