@@ -1,6 +1,7 @@
 'use client';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
+import { registerUser } from './actions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
 import {
@@ -20,7 +21,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { registerUser } from './actions';
+
 
 const formSchema = z
   .object({
