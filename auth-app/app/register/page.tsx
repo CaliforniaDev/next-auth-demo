@@ -22,7 +22,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-
 const formSchema = z
   .object({
     email: z.string().email(),
@@ -47,6 +46,12 @@ export default function Register() {
       password: data.password,
       passwordConfirm: data.passwordConfirm,
     });
+
+    if (res?.error) {
+      form.setError('email', {
+        message: res?.message,
+      });
+    }
     console.log(res);
   };
   return (
