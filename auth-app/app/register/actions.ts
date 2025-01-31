@@ -37,13 +37,11 @@ export const registerUser = async ({
   password,
   passwordConfirm,
 }: RegisterUser) => {
-  const result = await db.select();
   try {
-    const newUserScheme = z
-      .object({
+    // prettier-ignore
+    const newUserScheme = z.object({
         email: z.string().email(),
-      })
-      .and(passwordMatchSchema);
+      }).and(passwordMatchSchema);
     // Validate the input data
     const newUserValidation = newUserScheme.safeParse({
       email,
