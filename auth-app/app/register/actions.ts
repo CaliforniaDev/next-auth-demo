@@ -51,7 +51,7 @@ export const registerUser = async ({
       return {
         error: true,
         message:
-          newUserValidation.error.issues[0]?.message ?? 'An error occurred',
+          newUserValidation.error?.issues[0]?.message ?? 'An error occurred',
       };
     }
 
