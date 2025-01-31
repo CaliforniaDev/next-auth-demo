@@ -15,6 +15,10 @@ interface RegisterUser {
   password: string;
   passwordConfirm: string;
 }
+// Define a schema for the new user data
+const newUserSchema = z.object({
+    email: z.string().email(),
+  }).and(passwordMatchSchema);
 
 // Function to handle errors
 const handleError = (error: unknown) => {
@@ -31,19 +35,14 @@ const handleError = (error: unknown) => {
   };
 };
 
-// Server-side function to register a new user
 export const registerUser = async ({
   email,
   password,
   passwordConfirm,
 }: RegisterUser) => {
   try {
-    // prettier-ignore
-    const newUserScheme = z.object({
-        email: z.string().email(),
-      }).and(passwordMatchSchema);
     // Validate the input data
-    const newUserValidation = newUserScheme.safeParse({
+    const newUserValidation = newUserSchema.safeParse({
       email,
       password,
       passwordConfirm,
