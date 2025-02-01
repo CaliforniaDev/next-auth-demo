@@ -26,8 +26,7 @@ import Link from 'next/link';
 const formSchema = z
   .object({
     email: z.string().email(),
-  })
-  .and(passwordMatchSchema);
+  }).and(passwordMatchSchema);
 
 type FormData = z.infer<typeof formSchema>;
 
