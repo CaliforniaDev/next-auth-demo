@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { passwordSchema } from '@/validation/passwordSchema';
+import { loginWithCredentials } from './actions';
 
 import {
   Card,
@@ -38,7 +39,12 @@ export default function Login() {
     },
   });
 
-  const handleSubmit = async (data: FormData) => {};
+  const handleSubmit = async (data: FormData) => {
+    await loginWithCredentials({
+      email: data.email,
+      password: data.password,
+    });
+  };
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
