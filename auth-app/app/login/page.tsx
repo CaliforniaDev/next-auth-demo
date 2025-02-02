@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -31,6 +32,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function Login() {
+  const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,11 +42,16 @@ export default function Login() {
   });
 
   const handleSubmit = async (data: FormData) => {
-    await loginWithCredentials({
+    const response = await loginWithCredentials({
       email: data.email,
       password: data.password,
     });
+    if (response?.error) {
+    } else {
+      router.push('/my-account');
+    }
   };
+
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
