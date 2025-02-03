@@ -10,6 +10,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
+  CardFooter,
 } from '@/components/ui/card';
 import {
   Form,
@@ -26,7 +27,8 @@ import Link from 'next/link';
 const formSchema = z
   .object({
     email: z.string().email(),
-  }).and(passwordMatchSchema);
+  })
+  .and(passwordMatchSchema);
 
 type FormData = z.infer<typeof formSchema>;
 
@@ -128,6 +130,14 @@ export default function Register() {
               </form>
             </Form>
           </CardContent>
+          <CardFooter className='flex-col gap-2'>
+            <div className='text-muted-foreground text-sm'>
+              Already have an account?{' '}
+              <Link href='/login' className='underline'>
+                Login
+              </Link>
+            </div>
+          </CardFooter>
         </Card>
       )}
     </main>
