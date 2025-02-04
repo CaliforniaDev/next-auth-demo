@@ -1,6 +1,14 @@
 'use client';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useToast } from '@/hooks/use-toast';
 
-import { Button } from '@/components/ui/button';
+import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
+import { passwordSchema } from '@/validation/passwordSchema';
+import { changePassword } from './actions';
+
+
 import {
   Form,
   FormControl,
@@ -9,14 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
-import { passwordSchema } from '@/validation/passwordSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { changePassword } from './actions';
-import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z
   .object({
