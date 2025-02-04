@@ -15,6 +15,7 @@ import { passwordSchema } from '@/validation/passwordSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { changePassword } from './actions';
 
 const formSchema = z
   .object({
@@ -33,7 +34,19 @@ export default function ChangePasswordForm() {
       passwordConfirm: '',
     },
   });
-  const handleSubmit = async (data: FormData) => {};
+  const handleSubmit = async (data: FormData) => {
+    const response = await changePassword({
+      currentPassword: data.currentPassword,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
+
+    if (response?.error) {
+      form.setError('root', {
+        message: response.message,
+      });
+    }
+  };
   return (
     <Form {...form}>
       <form
@@ -83,6 +96,9 @@ export default function ChangePasswordForm() {
               </FormItem>
             )}
           />
+          {!!form.formState.errors.root?.message && (
+            <FormMessage>{form.formState.errors.root?.message}</FormMessage>
+          )}
           <Button type='submit'>Change Password</Button>
         </fieldset>
       </form>
