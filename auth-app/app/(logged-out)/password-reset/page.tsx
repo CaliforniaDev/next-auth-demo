@@ -32,12 +32,12 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function PasswordReset() {
-
+  const searchParams = useSearchParams();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      email: decodeURIComponent(searchParams.get('email') ?? ''),
     },
   });
 

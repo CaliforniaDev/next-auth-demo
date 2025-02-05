@@ -57,6 +57,11 @@ export default function Login() {
     }
   };
 
+  // Helper function to generate the password reset URL with the email query parameter
+  const generatePasswordResetUrl = (email: string) => {
+    const baseUrl = 'password-reset';
+    return email ? `${baseUrl}?email=${encodeURIComponent(email)}` : baseUrl;
+  };
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
@@ -119,7 +124,10 @@ export default function Login() {
           </div>
           <div className='text-muted-foreground text-sm'>
             Forgot your password?{' '}
-            <Link href='/password-reset' className='underline'>
+            <Link
+              href={generatePasswordResetUrl(form.getValues('email'))}
+              className='underline'
+            >
               Reset my password
             </Link>
           </div>
