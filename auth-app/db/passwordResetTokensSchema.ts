@@ -3,9 +3,11 @@ import { users } from './usersSchema';
 
 export const passwordResetTokensSchema = pgTable('password_reset_tokens', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => users.id, {
-    onDelete: 'cascade',
-  }),
+  userId: integer('user_id')
+    .references(() => users.id, {
+      onDelete: 'cascade',
+    })
+    .unique(),
   token: text('token'),
   tokenExpiration: timestamp('token_expiration'),
 });
