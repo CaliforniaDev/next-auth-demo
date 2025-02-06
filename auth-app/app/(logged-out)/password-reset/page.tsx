@@ -24,6 +24,7 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'next/navigation';
+import { passwordReset } from './actions';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -41,7 +42,9 @@ export default function PasswordReset() {
     },
   });
 
-  const handleSubmit = async (data: FormData) => {};
+  const handleSubmit = async (data: FormData) => {
+    await passwordReset(data.email);
+  };
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <Card className='w-[350px]'>
