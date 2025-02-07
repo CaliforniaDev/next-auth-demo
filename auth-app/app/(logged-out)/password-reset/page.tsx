@@ -45,64 +45,77 @@ export default function PasswordReset() {
   const handleSubmit = async (data: FormData) => {
     await passwordReset(data.email);
   };
+
   return (
     <main className='flex min-h-screen items-center justify-center'>
-      <Card className='w-[350px]'>
-        <CardHeader>
-          <CardTitle>Password Reset</CardTitle>
-          <CardDescription>
-            Enter your email address to reset your password.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              className='flex flex-col gap-2'
-              onSubmit={form.handleSubmit(handleSubmit)}
-            >
-              <fieldset
-                disabled={form.formState.isSubmitting}
+      {form.formState.isSubmitSuccessful ? (
+        <Card className='w-[350px]'>
+          <CardHeader>
+            <CardTitle>Email Sent</CardTitle>
+          </CardHeader>
+          <CardContent>
+            If you have an account with us you will receive a email reset email
+            at {form.getValues('email')}.
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className='w-[350px]'>
+          <CardHeader>
+            <CardTitle>Password Reset</CardTitle>
+            <CardDescription>
+              Enter your email address to reset your password.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
                 className='flex flex-col gap-2'
+                onSubmit={form.handleSubmit(handleSubmit)}
               >
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input {...field} type='email' />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <fieldset
+                  disabled={form.formState.isSubmitting}
+                  className='flex flex-col gap-2'
+                >
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} type='email' />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                {!!form.formState.errors.root?.message && (
-                  <FormMessage>
-                    {form.formState.errors.root.message}
-                  </FormMessage>
-                )}
-                <Button type='submit'>Submit</Button>
-              </fieldset>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className='text-muted-foreground flex-col gap-2 text-sm'>
-          <div>
-            Remember your password?{' '}
-            <Link href='/login' className='underline'>
-              Login
-            </Link>
-          </div>
-          <div>
-            Don't have an account?{' '}
-            <Link href='/register' className='underline'>
-              Register
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
+                  {!!form.formState.errors.root?.message && (
+                    <FormMessage>
+                      {form.formState.errors.root.message}
+                    </FormMessage>
+                  )}
+                  <Button type='submit'>Submit</Button>
+                </fieldset>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className='text-muted-foreground flex-col gap-2 text-sm'>
+            <div>
+              Remember your password?{' '}
+              <Link href='/login' className='underline'>
+                Login
+              </Link>
+            </div>
+            <div>
+              Don't have an account?{' '}
+              <Link href='/register' className='underline'>
+                Register
+              </Link>
+            </div>
+          </CardFooter>
+        </Card>
+      )}
     </main>
   );
 }
