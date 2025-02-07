@@ -30,16 +30,14 @@ const queryResetToken = async (token: string) => {
 // Validate the token expiration date with error handling
 const validateToken = async (token: string) => {
   try {
+    // Query the password reset token
     const passwordResetToken = await queryResetToken(token);
     const now = Date.now();
-
-    if (
-      !!passwordResetToken?.tokenExpiration &&
+    // Check if the token is valid
+    return (
+      passwordResetToken?.tokenExpiration &&
       now < passwordResetToken.tokenExpiration?.getTime()
-    ) {
-      return true;
-    }
-    return false;
+    );
   } catch (error) {
     console.error('Error validating token:', error);
     return false;
