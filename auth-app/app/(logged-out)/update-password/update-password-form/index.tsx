@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
+import Link from 'next/link';
 
 const formSchema = passwordMatchSchema;
 
@@ -27,7 +27,7 @@ interface UpdatePasswordFormProps {
   token: string;
 }
 
-export default function UpdatePasswordForm({token}: UpdatePasswordFormProps) {
+export default function UpdatePasswordForm({ token }: UpdatePasswordFormProps) {
   const { toast } = useToast();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -43,6 +43,10 @@ export default function UpdatePasswordForm({token}: UpdatePasswordFormProps) {
       passwordConfirm: data.passwordConfirm,
     });
 
+    if (response?.tokenInvalid) {
+      window.location.reload();
+    }
+
     if (response?.error) {
       form.setError('root', {
         message: response.message,
@@ -56,7 +60,14 @@ export default function UpdatePasswordForm({token}: UpdatePasswordFormProps) {
       form.reset();
     }
   };
-  return (
+  return form.formState.isSubmitSuccessful ? (
+    <div>
+      Your password has been updated.
+      <Link href='/login' className='underline'>
+        Click here to login to your account
+      </Link>
+    </div>
+  ) : (
     <Form {...form}>
       <form
         className='flex flex-col gap-2'
