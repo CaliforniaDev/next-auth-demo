@@ -2,32 +2,26 @@
 
 import { auth } from '@/auth';
 
-
 import db from '@/db/drizzle';
 import { eq } from 'drizzle-orm';
 import { hash } from 'bcryptjs';
 
-
 import { users } from '@/db/usersSchema';
 import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
 import { passwordResetTokensSchema } from '@/db/passwordResetTokensSchema';
-
-
-
-
 
 /**
  * Queries the database for a password reset token.
  * @param token - The reset token to query.
  * @returns The password reset token record if found, otherwise null.
  */
-export const queryResetToken = async (token: string) => {
+export const getResetToken = async (token: string) => {
   try {
-    const [passwordResetToken] = await db
+    const [resetTokenRecord] = await db
       .select()
       .from(passwordResetTokensSchema)
       .where(eq(passwordResetTokensSchema.token, token));
-    return passwordResetToken;
+    return resetTokenRecord;
   } catch (error) {
     console.error('Error querying reset token:', error);
     return null;
@@ -42,13 +36,13 @@ export const queryResetToken = async (token: string) => {
 
 export const validateToken = async (token: string) => {
   try {
-    // Query the password reset token
-    const passwordResetToken = await queryResetToken(token);
+    // Query the password reset token record
+    const resetTokenRecord = await getResetToken(token);
     const now = Date.now();
-    // Check if the token is valid
+    // Check if the token is valid or not expired
     return (
-      passwordResetToken?.tokenExpiration &&
-      now < passwordResetToken.tokenExpiration?.getTime()
+      resetTokenRecord?.tokenExpiration &&
+      now < resetTokenRecord.tokenExpiration?.getTime()
     );
   } catch (error) {
     console.error('Error validating token:', error);
@@ -76,7 +70,6 @@ export const updatePassword = async ({
     password,
     passwordConfirm,
   });
-
   if (!passwordValidation.success) {
     return {
       error: true,
@@ -87,7 +80,6 @@ export const updatePassword = async ({
 
   // 🚫 Prevent logged-in users from resetting passwords
   const session = await auth();
-
   if (session?.user?.id) {
     return {
       error: true,
@@ -97,8 +89,8 @@ export const updatePassword = async ({
   }
 
   // 🔍 Validate the reset token
-  const isValidToken = token ? await validateToken(token) : false;
-  if (!isValidToken) {
+  const isTokenValid = token ? await validateToken(token) : false;
+  if (!isTokenValid) {
     return {
       error: true,
       message: 'Your token is invalid or has expired',
@@ -106,9 +98,9 @@ export const updatePassword = async ({
     };
   }
 
-  // 🔄 Retrieve the reset token from the database
-  const passwordResetToken = await queryResetToken(token);
-  if (!passwordResetToken) {
+  // 🔄 Retrieve the reset token record from the database
+  const resetTokenRecord = await getResetToken(token);
+  if (!resetTokenRecord) {
     return {
       error: true,
       message: 'Invalid password reset token',
@@ -124,5 +116,5 @@ export const updatePassword = async ({
     .set({
       password: hashedPassword,
     })
-    .where(eq(users.id, passwordResetToken.userId!));
+    .where(eq(users.id, resetTokenRecord.userId!));
 };
