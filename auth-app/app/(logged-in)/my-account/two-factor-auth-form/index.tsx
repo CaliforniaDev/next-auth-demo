@@ -37,9 +37,6 @@ export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
     setCode(response.twoFactorSecret ?? '');
   };
 
-
-
-
   return (
     <div>
       {!isEnabled && (
