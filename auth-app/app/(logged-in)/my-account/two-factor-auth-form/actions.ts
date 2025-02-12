@@ -10,7 +10,7 @@ import { users } from '@/db/usersSchema';
 
 export const get2faSecret = async () => {
   const session = await auth();
-  
+
   if (!session?.user?.id) {
     return { error: true, message: 'Unauthorized' };
   }
@@ -46,4 +46,51 @@ export const get2faSecret = async () => {
       twoFactorSecret,
     ),
   };
+};
+
+export const activate2fa = async (token: string) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return { error: true, message: 'Unauthorized' };
+  }
+
+  const userId = session.user.id;
+
+  // Fetch user's existing 2FA secret
+  const [user] = await db
+    .select({ twoFactorSecret: users.twoFactorSecret })
+    .from(users)
+    .where(eq(users.id, parseInt(userId)));
+
+  // Explicitly check if the user exists
+  if (!user) {
+    return { error: true, message: 'User not found' };
+  }
+
+  if (user.twoFactorSecret) {
+    const isTokenValid = authenticator.check(token, user.twoFactorSecret);
+
+    if (!isTokenValid) {
+      return { error: true, message: 'Invalid OTP' };
+    }
+
+    await db
+      .update(users)
+      .set({ twoFactorActivated: true })
+      .where(eq(users.id, parseInt(userId)));
+  }
+};
+
+export const diasble2fa = async () => {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: true, message: 'Unauthorized' };
+  }
+  const userSessionId = session.user.id;
+
+  await db
+    .update(users)
+    .set({ twoFactorActivated: false })
+    .where(eq(users.id, parseInt(userSessionId)));
 };

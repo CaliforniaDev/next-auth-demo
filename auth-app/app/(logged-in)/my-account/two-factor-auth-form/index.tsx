@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { get2faSecret } from './actions';
+import { get2faSecret, activate2fa, diasble2fa } from './actions';
 
 import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,7 @@ export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
   const [isEnabled, setIsEnabled] = useState(twoFactorEnabled);
   const [step, setStep] = useState(1);
   const [code, setCode] = useState('');
+  const [otp, setOtp] = useState('');
 
   const handleEnableClick = async () => {
     const response = await get2faSecret();
@@ -45,11 +46,39 @@ export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
 
   const handleOTPSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Implement the code to verify the OTP
+    const response = await activate2fa(otp);
+
+    if (response?.error) {
+      toast({
+        variant: 'destructive',
+        title: response.message,
+      });
+      return;
+    }
+    toast({
+      className: 'bg-green-500 text-white',
+      title: 'Two-Factor Authentication has been enabled!',
+    });
+    setIsEnabled(true);
+  };
+
+  const handleDisable2faClick = async () => {
+    await diasble2fa();
+    toast({
+      className: 'bg-green-500 text-white',
+      title: 'Two-Factor Authentication has been disabled!',
+    });
+    setStep(Steps.INITIAL);
+    setIsEnabled(false);
   };
 
   return (
     <div>
+      {!!isEnabled && (
+        <Button onClick={handleDisable2faClick} variant='destructive'>
+          Disable Two-Factor Authentication
+        </Button>
+      )}
       {!isEnabled && (
         <div>
           {step === Steps.INITIAL && (
@@ -83,7 +112,7 @@ export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
                 Please enter the one-time passcode from the Google Authenticator
                 app.
               </p>
-              <InputOTP maxLength={6}>
+              <InputOTP maxLength={6} value={otp} onChange={setOtp}>
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
                   <InputOTPSlot index={1} />
@@ -96,7 +125,9 @@ export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
                   <InputOTPSlot index={5} />
                 </InputOTPGroup>
               </InputOTP>
-              <Button type='submit'>Submit and Activate</Button>
+              <Button disabled={otp.length !== 6} type='submit'>
+                Submit and Activate
+              </Button>
               <Button onClick={() => setStep(Steps.SHOW_QR)} variant='outline'>
                 Cancel
               </Button>
