@@ -93,4 +93,6 @@ export const disable2fa = async () => {
     .update(users)
     .set({ twoFactorActivated: false })
     .where(eq(users.id, parseInt(userSessionId)));
+
+  return { success: true, message: 'Two-factor authentication disabled successfully' };
 };
