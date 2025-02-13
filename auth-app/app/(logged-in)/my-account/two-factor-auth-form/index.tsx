@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { get2faSecret, activate2fa, diasble2fa } from './actions';
+import { get2faSecret, activate2fa, disable2fa } from './actions';
 
 import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
@@ -63,7 +63,7 @@ export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
   };
 
   const handleDisable2faClick = async () => {
-    await diasble2fa();
+    await disable2fa();
     toast({
       className: 'bg-green-500 text-white',
       title: 'Two-Factor Authentication has been disabled!',
