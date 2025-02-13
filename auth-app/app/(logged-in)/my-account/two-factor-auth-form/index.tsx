@@ -26,7 +26,7 @@ enum Steps {
 export default function TwoFactorAuthForm({ twoFactorEnabled }: Props) {
   const { toast } = useToast();
   const [isEnabled, setIsEnabled] = useState(twoFactorEnabled);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(Steps.INITIAL);
   const [code, setCode] = useState('');
   const [otp, setOtp] = useState('');
 
