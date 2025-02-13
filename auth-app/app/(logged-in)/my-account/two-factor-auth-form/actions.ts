@@ -82,7 +82,7 @@ export const activate2fa = async (token: string) => {
   }
 };
 
-export const diasble2fa = async () => {
+export const disable2fa = async () => {
   const session = await auth();
   if (!session?.user?.id) {
     return { error: true, message: 'Unauthorized' };
