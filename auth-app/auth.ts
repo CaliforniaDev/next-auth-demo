@@ -4,6 +4,7 @@ import db from './db/drizzle';
 import { users } from './db/usersSchema';
 import { eq } from 'drizzle-orm';
 import { compare } from 'bcryptjs';
+import { authenticator } from 'otplib';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
@@ -23,34 +24,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {
         email: {},
         password: {},
+        token: {},
       },
-      authorize: async credentials => {
-        // Check if credentials are provided
-        if (!credentials) {
-          throw new Error('No credentials provided');
-        }
-
-        // Fetch the user from the database
+      authorize: async (credentials) => {
         const [user] = await db
           .select()
           .from(users)
           .where(eq(users.email, credentials.email as string));
 
-        // Check if user exists
         if (!user) {
           throw new Error('Incorrect credentials');
+        } else {
+          const passwordCorrect = await compare(
+            credentials.password as string,
+            user.password!,
+          );
+          if (!passwordCorrect) {
+            throw new Error('Incorrect credentials');
+          }
+
+          if (user.twoFactorActivated) {
+            const tokenValid = authenticator.check(
+              credentials.token as string,
+              user.twoFactorSecret ?? '',
+            );
+
+            if (!tokenValid) {
+              throw new Error('Incorrect OTP');
+            }
+          }
         }
 
-        // Compare the provided password with the stored hashed password
-        const passwordCorrect = await compare(
-          credentials.password as string,
-          user.password!,
-        );
-        if (!passwordCorrect) {
-          throw new Error('Incorrect credentials');
-        }
-
-        // Return the user object
         return {
           id: user.id.toString(),
           email: user.email,
